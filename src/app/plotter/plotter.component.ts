@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import * as Plotly from 'plotly.js';
 
 @Component({
   selector: 'app-plotter',
@@ -6,12 +7,16 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./plotter.component.css']
 })
 export class PlotterComponent implements OnInit {
-  private readonly data: any = [];
+  public data: any[];
+  public data_labels: string[];
+  public raw_data: string;
   private readonly fileReader: FileReader = new FileReader();
-  private fileContents: string;
 
   constructor() {
-    this.fileReader.onload = this.extractFileContents;
+    this.data = [];
+    this.fileReader.onloadend = (e) => {
+      this.raw_data = this.fileReader.result;
+    };
   }
 
   ngOnInit() {
@@ -21,24 +26,42 @@ export class PlotterComponent implements OnInit {
     this.fileReader.readAsText(event.target.files[0]);
   }
 
-  private extractFileContents(contents: any): void {
-    const result = contents.target.result;
-    const lines = result.split(/\r?\n/);
+  public run_plot(): void {
+    this.parseFileContent();
+
+    // Create main plot
+    const plotdata = [
+      {
+        z: this.data,
+        type: 'heatmap'
+      }
+    ];
+
+    // Main Plot
+    Plotly.newPlot('main_plot', plotdata);
+  }
+
+  public parseFileContent(): void {
+    const lines = this.raw_data.split(/\r?\n/);
+
+    let linenumber = 0;
 
     lines.forEach(line => {
       const lineContent = line.split(/\r?;/);
 
-      console.log(line);
-
       const lineArray = [];
 
       lineContent.forEach(value => {
-        console.log(value);
-        lineArray.push(value);
+        lineArray.push(parseFloat(value));
       });
 
-      this.data.push(lineArray);
-    });
+      if (linenumber === 0) {
+        this.data_labels = lineArray;
+      } else {
+        this.data.push(lineArray);
+      }
 
+      linenumber++;
+    });
   }
 }

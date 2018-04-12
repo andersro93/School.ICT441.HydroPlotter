@@ -1,16 +1,28 @@
 <div class="row">
-  <div class="col-md-12">
-    <form>
+  <form>
+    <div class="col-md-6">
       <div class="form-group">
         <label for="resultFile">Result file to upload</label>
         <input type="file" class="form-control-file" name="resultFile" (change)="loadFile($event)" id="resultFile">
       </div>
-    </form>
-  </div>
+    </div>
+    <div class="col-md-2">
+      <div class="form-group">
+        <button type="button" (click)="this.run_plot()" class="btn btn-success">Plot!</button>
+      </div>
+    </div>
+  </form>
 </div>
 
 <div class="row">
   <div class="col-md-12">
-    <p></p>
+    <div class="card">
+      <div class="card-header">
+        <h3>Main plot</h3>
+      </div>
+      <div class="card-body">
+        <div id="main_plot"></div>
+      </div>
+    </div>
   </div>
 </div>

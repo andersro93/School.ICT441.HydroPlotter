@@ -14,6 +14,13 @@
     "lib": [
       "es2017",
       "dom"
-    ]
+    ],
+    "types": [
+      "plotly.js"
+    ],"paths": {
+      "plotly.js": [
+        "../node_modules/plotly.js/dist/plotly-with-meta.js"
+      ]
+    }
   }
 }
