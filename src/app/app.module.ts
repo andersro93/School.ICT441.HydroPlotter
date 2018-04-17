@@ -12,6 +12,7 @@ import { PlotterComponent } from './plotter/plotter.component';
 import {appRoutes} from './app.routes';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { GoogleDashboardService } from './_services/googleDashboard.service';
+import { MainPlotComponent } from './plotter/main-plot/main-plot.component';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { GoogleDashboardService } from './_services/googleDashboard.service';
     NavigationComponent,
     HomeComponent,
     PlotterComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    MainPlotComponent
   ],
   imports: [
     BrowserModule,

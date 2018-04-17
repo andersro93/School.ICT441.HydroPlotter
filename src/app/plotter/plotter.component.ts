@@ -1,5 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import * as Plotly from 'plotly.js';
+import {Component, EventEmitter, OnInit} from '@angular/core';
+import {Plotdata} from '../_models/plotdata';
+import {State} from '../_models/state';
+import {Probability} from '../_models/probability';
+import {Timestep} from '../_models/timestep';
+import {PlotdataEvent} from '../_events/plotdataEvent';
 
 @Component({
   selector: 'app-plotter',
@@ -7,13 +11,14 @@ import * as Plotly from 'plotly.js';
   styleUrls: ['./plotter.component.css']
 })
 export class PlotterComponent implements OnInit {
-  public data: any[];
-  public data_labels: string[];
+  public plotData: Plotdata;
   public raw_data: string;
+  public plotVisible = false;
   private readonly fileReader: FileReader = new FileReader();
 
+  public PlotEvent: EventEmitter<PlotdataEvent> = new EventEmitter();
+
   constructor() {
-    this.data = [];
     this.fileReader.onloadend = (e) => {
       this.raw_data = this.fileReader.result;
     };
@@ -26,42 +31,55 @@ export class PlotterComponent implements OnInit {
     this.fileReader.readAsText(event.target.files[0]);
   }
 
-  public run_plot(): void {
-    this.parseFileContent();
-
-    // Create main plot
-    const plotdata = [
-      {
-        z: this.data,
-        type: 'heatmap'
-      }
-    ];
-
-    // Main Plot
-    Plotly.newPlot('main_plot', plotdata);
-  }
-
   public parseFileContent(): void {
     const lines = this.raw_data.split(/\r?\n/);
 
-    let linenumber = 0;
+    this.plotData = new Plotdata();
+
+    let lineNumber = 0;
+    let initial = true;
 
     lines.forEach(line => {
-      const lineContent = line.split(/\r?;/);
+      const lineArray = line.split(/\r?;/);
 
-      const lineArray = [];
+      let value_number = 0;
 
-      lineContent.forEach(value => {
-        lineArray.push(parseFloat(value));
-      });
+      if (initial === true) {
+        lineArray.forEach(value => {
+          const state = new State();
+          state.Name = value;
 
-      if (linenumber === 0) {
-        this.data_labels = lineArray;
+          this.plotData.States.push(state);
+
+          initial = false;
+        });
       } else {
-        this.data.push(lineArray);
-      }
+        const timestep = new Timestep();
 
-      linenumber++;
+        timestep.Label = 'T' + lineNumber;
+
+        lineArray.forEach(value => {
+          const probability = new Probability();
+          const state = this.plotData.States[value_number];
+
+          probability.State = state;
+          probability.Value = parseFloat(value);
+          probability.Timestep = timestep;
+
+          state.Probabilities.push(probability);
+
+          timestep.Probabilities.push(probability);
+
+          this.plotData.Probabilities.push(probability);
+
+          value_number++;
+        });
+
+        lineNumber++;
+        this.plotData.Timesteps.push(timestep);
+      }
     });
+
+    this.PlotEvent.emit({PlotData: this.plotData});
   }
 }
