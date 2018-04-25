@@ -7,4 +7,4 @@ cache:
 test_letslearn:
   script:
     - npm install
-- ./node_modules/@angular/cli/bin/ng test --single-run=true --browsers PhantomJS --watch=false
+    - ./node_modules/@angular/cli/bin/ng test --single-run=true --browsers PhantomJS --watch=false
