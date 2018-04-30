@@ -12,6 +12,7 @@ import { PlotterComponent } from './plotter/plotter.component';
 import {appRoutes} from './app.routes';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { MainPlotComponent } from './plotter/main-plot/main-plot.component';
+import { PredictionPlotComponent } from './plotter/prediction-plot/prediction-plot.component';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { MainPlotComponent } from './plotter/main-plot/main-plot.component';
     HomeComponent,
     PlotterComponent,
     PageNotFoundComponent,
-    MainPlotComponent
+    MainPlotComponent,
+    PredictionPlotComponent
   ],
   imports: [
     BrowserModule,

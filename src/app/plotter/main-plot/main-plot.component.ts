@@ -10,6 +10,8 @@ import {PlotdataEvent} from '../../_events/plotdataEvent';
 })
 export class MainPlotComponent implements OnInit, OnDestroy {
 
+  public Visible = false;
+
   @Input() private PlotEvent: EventEmitter<PlotdataEvent>;
 
   private PlotData: Plotdata;

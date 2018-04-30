@@ -4,7 +4,6 @@ import {State} from '../_models/state';
 import {Probability} from '../_models/probability';
 import {Timestep} from '../_models/timestep';
 import {PlotdataEvent} from '../_events/plotdataEvent';
-import {forEach} from '@angular/router/src/utils/collection';
 
 @Component({
   selector: 'app-plotter',
@@ -12,9 +11,7 @@ import {forEach} from '@angular/router/src/utils/collection';
   styleUrls: ['./plotter.component.css']
 })
 export class PlotterComponent implements OnInit {
-  public plotData: Plotdata;
   public raw_data: string;
-  public plotVisible = false;
   private readonly fileReader: FileReader = new FileReader();
 
   public PlotEvent: EventEmitter<PlotdataEvent> = new EventEmitter();
