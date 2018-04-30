@@ -71,7 +71,24 @@ export class MainPlotComponent implements OnInit, OnDestroy {
       y: this.y_values,
       z: this.z_values,
       type: 'heatmap',
-      colorscale: [[0, '#ffffff'], [1, '#FF0000']],
+      colorscale: [
+        [0, '#FFFFFF'],
+        [0.001, '#FF00FF'],
+        [0.01, '#EE00EE'],
+        [0.02, '#DD00DD'],
+        [0.03, '#CC00CC'],
+        [0.04, '#BB00BB'],
+        [0.05, '#AA00AA'],
+        [0.06, '#990099'],
+        [0.07, '#880088'],
+        [0.08, '#770077'],
+        [0.09, '#660066'],
+        [0.1, '#000066'],
+        [0.12, '#000099'],
+        [0.14, '#0000BB'],
+        [0.16, '#0000EE'],
+        [1, '#000000']
+      ],
       showscale: true
     }], this.Layout);
   }
