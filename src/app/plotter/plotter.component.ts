@@ -4,6 +4,7 @@ import {State} from '../_models/state';
 import {Probability} from '../_models/probability';
 import {Timestep} from '../_models/timestep';
 import {PlotdataEvent} from '../_events/plotdataEvent';
+import {forEach} from '@angular/router/src/utils/collection';
 
 @Component({
   selector: 'app-plotter',
@@ -32,54 +33,47 @@ export class PlotterComponent implements OnInit {
   }
 
   public parseFileContent(): void {
-    const lines = this.raw_data.split(/\r?\n/);
+    const raw_object = JSON.parse(this.raw_data);
 
-    this.plotData = new Plotdata();
+    const plotData: Plotdata = new Plotdata();
+    const states: State[] = [];
 
-    let lineNumber = 0;
-    let initial = true;
+    // Find all the states first and create an array with them
+    for (const probability of raw_object.t0.Probabilities) {
+      const state = new State();
+      state.Name = probability.state;
+      states.push(state);
+    }
 
-    lines.forEach(line => {
-      const lineArray = line.split(/\r?;/);
+    plotData.States = states;
 
-      let value_number = 0;
+    Object.keys(raw_object).forEach(timestep_key => {
+        const timestep: Timestep = new Timestep();
+        timestep.Predicted = raw_object[timestep_key].Predicted;
+        timestep.Observed = raw_object[timestep_key].Observed;
+        timestep.Label = timestep_key;
 
-      if (initial === true) {
-        lineArray.forEach(value => {
-          const state = new State();
-          state.Name = value;
+        for (const probability_raw of raw_object[timestep_key].Probabilities) {
+          const probability: Probability = new Probability();
 
-          this.plotData.States.push(state);
-
-          initial = false;
-        });
-      } else {
-        const timestep = new Timestep();
-
-        timestep.Label = 'T' + lineNumber;
-
-        lineArray.forEach(value => {
-          const probability = new Probability();
-          const state = this.plotData.States[value_number];
-
-          probability.State = state;
-          probability.Value = parseFloat(value);
           probability.Timestep = timestep;
+          probability.Value = probability_raw.value;
+
+          const state = states.find(x => x.Name === probability_raw.state);
+          probability.State = state;
 
           state.Probabilities.push(probability);
-
           timestep.Probabilities.push(probability);
+          plotData.Probabilities.push(probability);
+        }
 
-          this.plotData.Probabilities.push(probability);
+        plotData.Timesteps.push(timestep);
+      });
 
-          value_number++;
-        });
-
-        lineNumber++;
-        this.plotData.Timesteps.push(timestep);
-      }
+    this.PlotEvent.emit({
+      PlotData: plotData
     });
 
-    this.PlotEvent.emit({PlotData: this.plotData});
+    console.log(plotData);
   }
 }
