@@ -14,8 +14,6 @@ export class PredictionPlotComponent implements OnInit, OnDestroy {
 
   private PlotData: Plotdata;
 
-  private Layout;
-
   private series: any[];
 
   constructor() { }
@@ -33,8 +31,6 @@ export class PredictionPlotComponent implements OnInit, OnDestroy {
   }
 
   private runPlotting() {
-    this.createLayoutArray();
-
     this.createSeries();
 
     this.plotTheData();
@@ -63,10 +59,6 @@ export class PredictionPlotComponent implements OnInit, OnDestroy {
     });
 
     this.series = [observations, predictions];
-  }
-
-  private createLayoutArray(): void {
-
   }
 
   private plotTheData(): void {

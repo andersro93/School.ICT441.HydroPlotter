@@ -70,7 +70,5 @@ export class PlotterComponent implements OnInit {
     this.PlotEvent.emit({
       PlotData: plotData
     });
-
-    console.log(plotData);
   }
 }

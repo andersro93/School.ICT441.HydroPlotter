@@ -13,6 +13,7 @@ import {appRoutes} from './app.routes';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { MainPlotComponent } from './plotter/main-plot/main-plot.component';
 import { PredictionPlotComponent } from './plotter/prediction-plot/prediction-plot.component';
+import { StatsComponent } from './plotter/stats/stats.component';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { PredictionPlotComponent } from './plotter/prediction-plot/prediction-pl
     PlotterComponent,
     PageNotFoundComponent,
     MainPlotComponent,
-    PredictionPlotComponent
+    PredictionPlotComponent,
+    StatsComponent
   ],
   imports: [
     BrowserModule,

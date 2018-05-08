@@ -14,13 +14,16 @@
   </form>
 </div>
 
-<div class="row">
+<div class="row mt-3">
   <div class="col-md-12">
     <app-main-plot [PlotEvent]="this.PlotEvent"></app-main-plot>
   </div>
 </div>
-<div class="row">
-  <div class="col-md-12">
+<div class="row mt-3">
+  <div class="col-md-10">
     <app-prediction-plot [PlotEvent]="this.PlotEvent"></app-prediction-plot>
+  </div>
+  <div class="col-md-2">
+    <app-stats [PlotEvent]="this.PlotEvent"></app-stats>
   </div>
 </div>
